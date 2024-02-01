@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  deepstream:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+    stdin_open: true
+    tty: true
+    volumes:
+      #- /home/daknoblo/project:/opt/nvidia/deepstream/deepstream/sources/project
+      - /home/daknoblo/deepstream-samples:/deepstream-samples
+    working_dir: /opt/nvidia/deepstream/deepstream/sources/project
+    image: nvcr.io/nvidia/deepstream:6.4-samples-multiarch
+    restart: always
+    networks:
+      - dockge_default
+networks:
+  dockge_default:
+    external: true

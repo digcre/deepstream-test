@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  portainer:
+    restart: unless-stopped
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9443:9443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+      - ./data:/data
+    networks:
+      - dockge_default
+  glances:
+    restart: unless-stopped
+    image: nicolargo/glances:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=Europe/Berlin
+      - GLANCES_OPT=-w
+    ports:
+      - 61208:61208
+      - 61209:61209
+    networks:
+      - dockge_default
+    user: 0:0
+networks:
+  dockge_default:
+    external: true
